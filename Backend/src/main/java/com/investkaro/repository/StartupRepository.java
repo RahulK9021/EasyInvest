@@ -16,6 +16,10 @@ public interface StartupRepository extends JpaRepository <Startup ,Long> {
 
     List<Startup> findByIndustry_IdAndAmountRequiredBetween(Long industryId, Double min, Double max);
 
+    @Query("SELECT s FROM Startup s ORDER BY s.totalFunding DESC")
+    List<Startup> findTopFundedStartups();
+
+
 //    @Query("SELECT SUM(i.amount) FROM Investment i WHERE i.startup.id = :startupId")
 //    Double getTotalInvestmentForStartup(Long startupId);
 }

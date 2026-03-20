@@ -1,12 +1,14 @@
 package com.investkaro.controller;
 
-import com.investkaro.entity.FounderProfile;
+import com.investkaro.dto.InvestorDashboardResponse;
+import com.investkaro.entity.InvestorProfile;
 import com.investkaro.entity.Startup;
 import com.investkaro.entity.User;
-import com.investkaro.repository.FounderRepository;
-import com.investkaro.repository.StartupRepository;
+import com.investkaro.repository.InvestorRepository;
 import com.investkaro.repository.UserRepository;
+import com.investkaro.service.InvestmentService;
 import com.investkaro.service.StartupService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,15 @@ import java.util.List;
 public class InvestorStartupController {
 
     private final StartupService startupService;
+    private  final UserRepository userRepository;
+    private final InvestmentService investmentService;
+    private final InvestorRepository investorRepository;
 
-    public InvestorStartupController(StartupService startupService) {
+    public InvestorStartupController(StartupService startupService, UserRepository userRepository, InvestmentService investmentService, InvestorRepository investorRepository) {
         this.startupService = startupService;
+        this.userRepository = userRepository;
+        this.investmentService = investmentService;
+        this.investorRepository = investorRepository;
     }
 
     @GetMapping
@@ -40,5 +48,27 @@ public class InvestorStartupController {
     @GetMapping("/filter")
     public List<Startup> getInvestmentByFilter(@RequestParam Long industryId , @RequestParam Double min ,@RequestParam Double max){
         return startupService.findByIndustry_IdAndAmountRequiredBetween(industryId , min , max);
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<?> getInvestorDashboard(Authentication authentication) {
+
+        User user = userRepository
+                .findByEmail(authentication.getName())
+                .orElseThrow();
+
+        InvestorProfile investor = investorRepository
+                .findByUser(user)
+                .orElseThrow();
+
+        InvestorDashboardResponse dashboard =
+                investmentService.getInvestorDashboard(investor.getId());
+
+        return ResponseEntity.ok(dashboard);
+    }
+
+    @GetMapping("/top-funded")
+    public ResponseEntity<?> getTopFundedStartup(){
+        return ResponseEntity.ok(startupService.getTopFundedStartups());
     }
 }

@@ -1,5 +1,6 @@
 package com.investkaro.service.Impl;
 
+import com.investkaro.dto.InvestorDashboardResponse;
 import com.investkaro.entity.Investment;
 import com.investkaro.entity.InvestorProfile;
 import com.investkaro.entity.Startup;
@@ -12,6 +13,8 @@ import com.investkaro.service.InvestmentService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class InvestmentServiceImpl implements InvestmentService {
     private final InvestmentRepository investmentRepository;
@@ -37,9 +40,11 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         InvestorProfile investor = investorRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Investor not found"));
+        System.out.println("Investor ID from DB: " + investor.getId());
 
         Startup startup = startupRepository.findById(startupId)
                 .orElseThrow(() -> new RuntimeException("Startup not found"));
+        System.out.println("Investor ID from DB: " + startup.getId());
 
         boolean alreadyInvested =
                 investmentRepository.existsByInvestor_IdAndStartup_Id(
@@ -58,5 +63,25 @@ public class InvestmentServiceImpl implements InvestmentService {
         investment.setCreatedAt(LocalDateTime.now());
 
         investmentRepository.save(investment);
+        startup.setTotalFunding(startup.getTotalFunding() + amount);
+        startupRepository.save(startup);
     }
-}
+
+    @Override
+    public InvestorDashboardResponse getInvestorDashboard(Long investorId) {
+
+            Double totalInvested = investmentRepository.getTotalInvested(investorId);
+
+            Double largestInvestment = investmentRepository.getLargestInvestment(investorId);
+
+            Long totalStartups = investmentRepository.getTotalStartupsInvested(investorId);
+
+            return new InvestorDashboardResponse(
+                    totalInvested != null ? totalInvested : 0,
+                    totalStartups != null ? totalStartups : 0,
+                    largestInvestment != null ? largestInvestment : 0
+            );
+        }
+    }
+
+

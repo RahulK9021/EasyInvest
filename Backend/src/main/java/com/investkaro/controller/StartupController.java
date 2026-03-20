@@ -4,6 +4,7 @@ import com.investkaro.dto.FundingProgressDTO;
 import com.investkaro.dto.StartupRequest;
 import com.investkaro.dto.StartupResponse;
 import com.investkaro.entity.Startup;
+import com.investkaro.service.InvestmentService;
 import com.investkaro.service.StartupService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,9 +18,11 @@ import java.util.List;
 @RequestMapping("/founder/startups")
 public class StartupController {
     private final StartupService startupService;
+    private final InvestmentService investmentService;
 
-    public StartupController(StartupService startupService) {
+    public StartupController(StartupService startupService, InvestmentService investmentService) {
         this.startupService = startupService;
+        this.investmentService = investmentService;
     }
 
     @PostMapping
@@ -39,5 +42,10 @@ public class StartupController {
     @PreAuthorize("hasRole('FOUNDER') or hasRole('INVESTOR')")
     public FundingProgressDTO getFundingProgress(@PathVariable Long startupId){
         return startupService.getFundingProgress(startupId);
+    }
+
+    @GetMapping("/{startupId}/investors")
+    public ResponseEntity<?> getStartupInvestors(@PathVariable Long startupId){
+        return ResponseEntity.ok(startupService.getInvestors(startupId));
     }
 }

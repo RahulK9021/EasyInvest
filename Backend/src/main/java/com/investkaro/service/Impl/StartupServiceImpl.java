@@ -1,11 +1,10 @@
 package com.investkaro.service.Impl;
 
 import com.investkaro.dto.FundingProgressDTO;
+import com.investkaro.dto.StartupInvestorResponse;
 import com.investkaro.dto.StartupRequest;
-import com.investkaro.entity.FounderProfile;
-import com.investkaro.entity.Industry;
-import com.investkaro.entity.Startup;
-import com.investkaro.entity.User;
+import com.investkaro.dto.TopStartupResponse;
+import com.investkaro.entity.*;
 import com.investkaro.repository.*;
 import com.investkaro.service.StartupService;
 import jakarta.persistence.EntityNotFoundException;
@@ -109,6 +108,38 @@ public class StartupServiceImpl implements StartupService {
         dto.setProgressPercentage(progress);
 
         return dto;
+    }
+
+    @Override
+    public List<TopStartupResponse> getTopFundedStartups() {
+        List<Startup> startups = startupRepository.findTopFundedStartups();
+        return startups.stream()
+                .map(startup -> {
+                    double percentage = 0;
+                    if (startup.getAmountRequired() != null && startup.getAmountRequired() > 0){
+                        Double funding = startup.getTotalFunding();
+                        double safeFunding = (funding != null) ? funding : 0.0;
+                        percentage = (safeFunding / startup.getAmountRequired()) * 100;
+                    }
+
+                    return new TopStartupResponse(
+                            startup.getCompanyName(),
+                            startup.getTotalFunding(),
+                            startup.getAmountRequired(),
+                            percentage
+                    );
+                }).toList();
+    }
+
+    @Override
+    public List<StartupInvestorResponse> getInvestors(Long startupId) {
+        List<Investment> investments = investmentRepository.findByStartup_Id(startupId);
+        return investments.stream()
+                .map(investment -> new StartupInvestorResponse(
+                        investment.getInvestor().getUser().getFullName(),
+                        investment.getAmount()
+                ))
+                .toList();
     }
 
 }

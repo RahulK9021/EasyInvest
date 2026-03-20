@@ -18,7 +18,13 @@ public interface InvestmentRepository extends JpaRepository<Investment , Long> {
     @Query("SELECT SUM(i.amount) FROM Investment i WHERE i.startup.id = :startupId")
     Double getTotalInvestmentForStartup(@Param("startupId") Long startupId);
 
-    @Query("SELECT i FROM Investment i WHERE i.investor.id = :investorId")
-    List<Investment> findByInvestorId(Long investorId);
 
+    @Query("SELECT SUM(i.amount) FROM Investment i WHERE i.investor.id = :investorId")
+    Double getTotalInvested(@Param("investorId") Long investorId);
+
+    @Query("SELECT MAX(i.amount) FROM Investment i WHERE i.investor.id = :investorId")
+    Double getLargestInvestment(@Param("investorId") Long investorId);
+
+    @Query("SELECT COUNT(DISTINCT i.startup.id) FROM Investment i WHERE i.investor.id = :investorId")
+    Long getTotalStartupsInvested(@Param("investorId") Long investorId);
 }
