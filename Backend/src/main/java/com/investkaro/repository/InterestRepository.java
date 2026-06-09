@@ -9,4 +9,6 @@ public interface InterestRepository extends JpaRepository<Interest , Long> {
     List<Interest> findByStartup_Id(Long startupId);
 
     List<Interest> findByStartup_Founder_Id(Long founderId);
+
+    void deleteByStartupId(Long startupId);
 }

@@ -13,16 +13,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    private final AuthService service;
-
-    public AuthController(AuthService authService, AuthService service) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.service = service;
     }
 
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request){
-        return service.register(request);
+        return authService.register(request);
     }
 
     @PostMapping("/login")

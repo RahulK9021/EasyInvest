@@ -1,0 +1,56 @@
+<section class="page-shell hero-shell">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">EasyInvest frontend</span>
+      <h1 class="section-title">A cleaner investment platform for founders, investors, and the team running both sides.</h1>
+      <p class="section-copy">
+        We are shaping the product around trust, clarity, and momentum. Start with the public-facing
+        experience, then move into role-based workflows without the app feeling fragmented.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn-brand">Create an account</a>
+        <a routerLink="/startups" class="btn-ghost">Explore startups</a>
+      </div>
+
+      <div class="metrics-grid">
+        <article class="metric-card" *ngFor="let metric of metrics">
+          <strong>{{ metric.value }}</strong>
+          <span>{{ metric.label }}</span>
+        </article>
+      </div>
+    </div>
+
+    <div class="glass-panel showcase-card">
+      <div class="showcase-intro">
+        <span class="pill">What we are building now</span>
+        <h2>Frontend foundation</h2>
+        <p>
+          A polished landing page, investor browsing flow, and stronger dashboards so the product already
+          feels usable while backend features continue to land.
+        </p>
+      </div>
+
+      <div class="showcase-stack">
+        <article class="status-card" *ngFor="let highlight of highlights">
+          <h3>{{ highlight.title }}</h3>
+          <p>{{ highlight.copy }}</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-shell lane-shell">
+  <div class="lane-header">
+    <span class="eyebrow">Operating model</span>
+    <h2>Three role lanes, one shared product surface.</h2>
+  </div>
+
+  <div class="lane-grid">
+    <article class="lane-card" *ngFor="let lane of operatingLanes">
+      <span class="lane-index">{{ lane.title }}</span>
+      <p>{{ lane.copy }}</p>
+    </article>
+  </div>
+</section>

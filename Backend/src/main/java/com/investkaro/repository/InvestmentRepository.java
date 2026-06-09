@@ -27,4 +27,13 @@ public interface InvestmentRepository extends JpaRepository<Investment , Long> {
 
     @Query("SELECT COUNT(DISTINCT i.startup.id) FROM Investment i WHERE i.investor.id = :investorId")
     Long getTotalStartupsInvested(@Param("investorId") Long investorId);
+
+    void deleteByStartupId(Long startupId);
+
+    List<Investment> findByInvestorIdOrderByCreatedAtDesc(Long investorId);
+
+    @Query("SELECT COUNT(i) FROM Investment i WHERE i.startup.id = :startupId")
+    Long countInvestorsByStartupId(Long startupId);
+
+
 }

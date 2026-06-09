@@ -1,17 +1,15 @@
 package com.investkaro.service.Impl;
 
-import com.investkaro.dto.FundingProgressDTO;
-import com.investkaro.dto.StartupInvestorResponse;
-import com.investkaro.dto.StartupRequest;
-import com.investkaro.dto.TopStartupResponse;
+import com.investkaro.dto.*;
 import com.investkaro.entity.*;
 import com.investkaro.repository.*;
 import com.investkaro.service.StartupService;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.sql.ast.tree.expression.Star;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StartupServiceImpl implements StartupService {
@@ -20,13 +18,15 @@ public class StartupServiceImpl implements StartupService {
     private final FounderRepository founderRepository;
     private final IndustryRepository industryRepository;
     private final InvestmentRepository investmentRepository;
+    private final InterestRepository interestRepository;
 
-    public StartupServiceImpl(StartupRepository startupRepository, UserRepository userRepository, FounderRepository founderRepository, IndustryRepository industryRepository, InvestmentRepository investmentRepository) {
+    public StartupServiceImpl(StartupRepository startupRepository, UserRepository userRepository, FounderRepository founderRepository, IndustryRepository industryRepository, InvestmentRepository investmentRepository, InterestRepository interestRepository) {
         this.startupRepository = startupRepository;
         this.userRepository = userRepository;
         this.founderRepository = founderRepository;
         this.industryRepository = industryRepository;
         this.investmentRepository = investmentRepository;
+        this.interestRepository = interestRepository;
     }
 
 
@@ -61,17 +61,69 @@ public class StartupServiceImpl implements StartupService {
     }
 
     @Override
-    public List<Startup> getAllStartups(String email) {
-        return startupRepository.findAll();
+    public List<StartupResponse> getAllStartups(String email) {
+
+        List<Startup> startups = startupRepository.findAll();
+
+        return startups.stream()
+                .map(startup -> new StartupResponse(
+                        startup.getId(),
+                        startup.getCompanyName(),
+                        startup.getBusinessModel(),
+                        startup.getFoundedYear(),
+                        startup.getTeamSize(),
+                        startup.getProblem(),
+                        startup.getSolution(),
+                        startup.getTargetMarket(),
+                        startup.getUsp(),
+                        startup.getCompetitors(),
+                        startup.getRevenue(),
+                        startup.getBurnRate(),
+                        startup.getCac(),
+                        startup.getLtv(),
+                        startup.getTotalFunding(),
+                        startup.getAmountRequired(),
+                        startup.getEquityOffered(),
+                        startup.getValuation(),
+                        startup.getFounder().getUser().getFullName(),
+                        startup.getIndustry().getName()
+                ))
+                .toList();
     }
 
     @Override
-    public List<Startup> getAllStartups() {
-        return startupRepository.findAll();
+    public List<StartupResponse> getAllStartups() {
+
+        List<Startup> startups = startupRepository.findAll();
+
+        return startups.stream()
+                .map(startup -> new StartupResponse(
+                        startup.getId(),
+                        startup.getCompanyName(),
+                        startup.getBusinessModel(),
+                        startup.getFoundedYear(),
+                        startup.getTeamSize(),
+                        startup.getProblem(),
+                        startup.getSolution(),
+                        startup.getTargetMarket(),
+                        startup.getUsp(),
+                        startup.getCompetitors(),
+                        startup.getRevenue(),
+                        startup.getBurnRate(),
+                        startup.getCac(),
+                        startup.getLtv(),
+                        startup.getTotalFunding(),
+                        startup.getAmountRequired(),
+                        startup.getEquityOffered(),
+                        startup.getValuation(),
+                        startup.getFounder().getUser().getFullName(),
+                        startup.getIndustry().getName()
+                ))
+                .toList();
     }
 
     @Override
-    public List<Startup> findByIndustry_Id(Long industryId) {
+    public List<StartupResponse> findByIndustry_Id(Long industryId) {
         if (!industryRepository.existsById(industryId)) {
             throw new EntityNotFoundException("Industry not found with id: " + industryId);
         }
@@ -79,12 +131,12 @@ public class StartupServiceImpl implements StartupService {
     }
 
     @Override
-    public List<Startup> findByInvestmentRange(Double min, Double max) {
+    public List<StartupResponse> findByInvestmentRange(Double min, Double max) {
         return startupRepository.findByAmountRequiredBetween(min , max);
     }
 
     @Override
-    public List<Startup> findByIndustry_IdAndAmountRequiredBetween(Long industryId, Double min, Double max) {
+    public List<StartupResponse> findByIndustry_IdAndAmountRequiredBetween(Long industryId, Double min, Double max) {
         return startupRepository.findByIndustry_IdAndAmountRequiredBetween(industryId , min , max);
     }
 
@@ -141,5 +193,98 @@ public class StartupServiceImpl implements StartupService {
                 ))
                 .toList();
     }
+
+    @Override
+    public Startup updateStartup(Long id, UpdateStartupRequest request, String email) {
+        Startup startup = startupRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found "));
+        if (!startup.getFounder().getUser().getEmail().equals(email)){
+            throw new RuntimeException("You are not allowed to update");
+        }
+        startup.setCompanyName(request.getCompanyName());
+        startup.setBusinessModel(request.getBusinessModel());
+        startup.setTeamSize(request.getTeamSize());
+        startup.setProblem(request.getProblem());
+        startup.setSolution(request.getSolution());
+        startup.setTargetMarket(request.getTargetMarket());
+        startup.setUsp(request.getUsp());
+        startup.setCompetitors(request.getCompetitors());
+
+        startup.setRevenue(request.getRevenue());
+        startup.setBurnRate(request.getBurnRate());
+        startup.setCac(request.getCac());
+        startup.setLtv(request.getLtv());
+        startup.setTotalFunding(request.getTotalFunding());
+
+        startup.setAmountRequired(request.getAmountRequired());
+        startup.setEquityOffered(request.getEquityOffered());
+        startup.setValuation(request.getValuation());
+
+        return startupRepository.save(startup);
+    }
+
+    @Transactional
+    @Override
+    public void deleteStartup(Long id ,String email) {
+        Startup startup = startupRepository.findById(id).orElseThrow(() -> new RuntimeException("User no Found"));
+        if (!startup.getFounder().getUser().getEmail().equals(email)){
+            throw new RuntimeException("You are not allowed to delete");
+        }
+        interestRepository.deleteByStartupId(id);
+        investmentRepository.deleteByStartupId(id);
+        startupRepository.delete(startup);
+    }
+
+    public List<StartupResponse> filterStartups(
+            Long industryId,
+            Double minAmount,
+            Double maxAmount) {
+
+        return startupRepository.filterStartups(industryId, minAmount, maxAmount);
+    }
+
+    public List<FounderDashboardResponse> getFounderDashboard(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        FounderProfile founder = founderRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Founder not found"));
+
+        List<Startup> startups = startupRepository.findByFounder(founder);
+
+        return startups.stream().map(startup -> {
+
+            Long totalInvestors =
+                    investmentRepository.countInvestorsByStartupId(startup.getId());
+
+            double percentage = 0;
+
+            if (startup.getAmountRequired() != null && startup.getAmountRequired() > 0) {
+                percentage =
+                        (startup.getTotalFunding() / startup.getAmountRequired()) * 100;
+            }
+
+            return new FounderDashboardResponse(
+                    startup.getId(),
+                    startup.getCompanyName(),
+                    startup.getTotalFunding(),
+                    startup.getAmountRequired(),
+                    totalInvestors,
+                    percentage
+            );
+
+        }).toList();
+    }
+
+    @Override
+    public Optional<Startup> findById(Long id) {
+        return startupRepository.findById(id);
+    }
+
+
+    public List<StartupResponse> searchStartups(String keyword) {
+        return startupRepository.searchStartups(keyword);
+    }
+
 
 }

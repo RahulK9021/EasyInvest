@@ -1,0 +1,88 @@
+<section class="page-shell auth-page">
+  <div class="auth-layout">
+    <div class="auth-story">
+      <span class="eyebrow">Capital meets conviction</span>
+      <h1 class="section-title">Back the next serious startup with a workspace built for trust.</h1>
+      <p class="section-copy">
+        EasyInvest helps founders present their business clearly and gives investors a cleaner way to
+        discover, evaluate, and commit capital.
+      </p>
+
+      <div class="story-grid">
+        <article class="status-card">
+          <span class="pill">Investor tools</span>
+          <h3>See traction fast</h3>
+          <p>Track funding, compare startups, and move from browsing to conviction without noisy screens.</p>
+        </article>
+
+        <article class="status-card accent-card">
+          <span class="pill">Founder tools</span>
+          <h3>Pitch with structure</h3>
+          <p>Present your company story, business model, and funding ask in a format investors can act on.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="glass-panel auth-card">
+      <div class="auth-card-copy">
+        <span class="eyebrow">Welcome back</span>
+        <h2>Sign in</h2>
+        <p>Use your account to open the dashboard that matches your role.</p>
+      </div>
+
+      <div class="demo-row">
+        <button type="button" class="demo-pill" (click)="fillDemo('INVESTOR')">Investor demo</button>
+        <button type="button" class="demo-pill" (click)="fillDemo('FOUNDER')">Founder demo</button>
+        <button type="button" class="demo-pill" (click)="fillDemo('ADMIN')">Admin demo</button>
+      </div>
+
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
+        <div>
+          <label class="field-label" for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="field-input"
+            name="email"
+            [(ngModel)]="loginData.email"
+            required
+            email
+            #email="ngModel"
+            placeholder="founder@easyinvest.com"
+          />
+          <small class="field-error" *ngIf="email.invalid && email.touched">Enter a valid email address.</small>
+        </div>
+
+        <div>
+          <label class="field-label" for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            class="field-input"
+            name="password"
+            [(ngModel)]="loginData.password"
+            required
+            minlength="4"
+            #password="ngModel"
+            placeholder="Enter your password"
+          />
+          <small class="field-error" *ngIf="password.invalid && password.touched">Minimum 4 characters required.</small>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert-clean error">
+          {{ errorMessage }}
+        </div>
+
+        <button class="btn-brand auth-submit" [disabled]="loginForm.invalid || loading">
+          <span *ngIf="!loading">Open dashboard</span>
+          <span *ngIf="loading">Signing you in...</span>
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        New here?
+        <a routerLink="/register">Create your account</a>
+      </p>
+    </div>
+  </div>
+</section>

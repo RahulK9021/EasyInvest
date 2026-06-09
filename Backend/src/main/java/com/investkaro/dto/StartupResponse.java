@@ -1,8 +1,16 @@
 package com.investkaro.dto;
 
+import com.investkaro.entity.FounderProfile;
+import com.investkaro.entity.Industry;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StartupResponse {
     private Long id;
     private String companyName;
@@ -22,9 +30,7 @@ public class StartupResponse {
     private double amountRequired;
     private double equityOffered;
     private double valuation;
-
     private String founderName;
-    private String founderEmail;
     private String industryName;
 }
 
