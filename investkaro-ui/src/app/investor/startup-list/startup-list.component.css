@@ -62,6 +62,30 @@
   gap: 10px;
 }
 
+.startup-topline {
+  justify-content: space-between;
+}
+
+.quick-actions,
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--accent);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
 .funding-chip,
 .startup-meta span {
   display: inline-flex;
@@ -93,6 +117,10 @@
 
 .card-action {
   width: fit-content;
+}
+
+.card-actions {
+  flex-wrap: wrap;
 }
 
 .skeleton-card {

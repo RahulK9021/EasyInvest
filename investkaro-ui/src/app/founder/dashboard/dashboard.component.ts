@@ -8,11 +8,14 @@ import {
   FounderDashboardItem,
   FundingProgress,
   Industry,
+  StartupDocument,
   StartupDetail,
   StartupInvestor,
   StartupRequestPayload,
+  StartupUpdate,
   UpdateStartupPayload
 } from '../../services/api.models';
+import { EngagementService } from '../../services/engagement.service';
 
 @Component({
   selector: 'app-founder-dashboard',
@@ -27,10 +30,16 @@ export class FounderDashboardComponent implements OnInit {
   selectedStartup: StartupDetail | null = null;
   progress: FundingProgress | null = null;
   investors: StartupInvestor[] = [];
+  updates: StartupUpdate[] = [];
+  documents: StartupDocument[] = [];
   loading = true;
   successMessage = '';
   errorMessage = '';
   activeStartupId: number | null = null;
+  updateTitle = '';
+  updateDescription = '';
+  documentType = 'Pitch deck PDF';
+  selectedFile: File | null = null;
 
   startupForm: StartupRequestPayload = {
     companyName: '',
@@ -74,7 +83,8 @@ export class FounderDashboardComponent implements OnInit {
 
   constructor(
     private startupService: StartupService,
-    private investorService: InvestorService
+    private investorService: InvestorService,
+    private engagementService: EngagementService
   ) {}
 
   ngOnInit() {
@@ -174,6 +184,18 @@ export class FounderDashboardComponent implements OnInit {
         this.investors = Array.isArray(investors) ? investors : [];
       }
     });
+
+    this.engagementService.getStartupUpdates(startupId).subscribe({
+      next: (updates) => {
+        this.updates = Array.isArray(updates) ? updates : [];
+      }
+    });
+
+    this.engagementService.getDocuments(startupId).subscribe({
+      next: (documents) => {
+        this.documents = Array.isArray(documents) ? documents : [];
+      }
+    });
   }
 
   updateStartup() {
@@ -223,10 +245,64 @@ export class FounderDashboardComponent implements OnInit {
     });
   }
 
+  publishUpdate() {
+    if (this.activeStartupId == null || !this.updateTitle.trim() || !this.updateDescription.trim()) {
+      return;
+    }
+
+    this.engagementService.publishStartupUpdate(this.activeStartupId, this.updateTitle.trim(), this.updateDescription.trim()).subscribe({
+      next: () => {
+        this.successMessage = 'Startup update published.';
+        this.updateTitle = '';
+        this.updateDescription = '';
+        this.loadStartupInsights(this.activeStartupId!);
+      },
+      error: () => {
+        this.errorMessage = 'We could not publish the update right now.';
+      }
+    });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files?.[0] ?? null;
+  }
+
+  uploadDocument() {
+    if (this.activeStartupId == null || !this.selectedFile) {
+      return;
+    }
+
+    this.engagementService.uploadDocument(this.activeStartupId, this.documentType, this.selectedFile).subscribe({
+      next: () => {
+        this.successMessage = 'Document uploaded.';
+        this.selectedFile = null;
+        this.loadStartupInsights(this.activeStartupId!);
+      },
+      error: () => {
+        this.errorMessage = 'We could not upload this document.';
+      }
+    });
+  }
+
+  deleteDocument(documentId: number) {
+    this.engagementService.deleteDocument(documentId).subscribe({
+      next: () => {
+        this.documents = this.documents.filter((document) => document.id !== documentId);
+      }
+    });
+  }
+
+  downloadUrl(documentId: number): string {
+    return this.engagementService.downloadDocument(documentId);
+  }
+
   private resetSelectedStartup() {
     this.selectedStartup = null;
     this.progress = null;
     this.investors = [];
+    this.updates = [];
+    this.documents = [];
     this.activeStartupId = null;
   }
 }

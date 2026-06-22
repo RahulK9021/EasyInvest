@@ -64,7 +64,18 @@
     <article class="status-card startup-card" *ngFor="let startup of startups; trackBy: trackByStartup">
       <div class="startup-topline">
         <span class="pill">{{ startup.industryName || 'Emerging sector' }}</span>
-        <span class="funding-chip">Rs {{ startup.amountRequired | number:'1.0-0' }}</span>
+        <div class="quick-actions">
+          <button
+            *ngIf="isInvestor"
+            class="icon-button"
+            type="button"
+            [title]="bookmarkedStartupIds.has(startup.id) ? 'Remove bookmark' : 'Save startup'"
+            (click)="toggleBookmark(startup.id)"
+          >
+            {{ bookmarkedStartupIds.has(startup.id) ? '★' : '☆' }}
+          </button>
+          <span class="funding-chip">Rs {{ startup.amountRequired | number:'1.0-0' }}</span>
+        </div>
       </div>
 
       <h2>{{ startup.companyName }}</h2>
@@ -89,7 +100,17 @@
         </div>
       </div>
 
-      <a class="btn-brand card-action" [routerLink]="['/startups', startup.id]">Open startup profile</a>
+      <div class="card-actions">
+        <button
+          *ngIf="isInvestor"
+          class="btn-ghost"
+          type="button"
+          (click)="toggleFollow(startup.id)"
+        >
+          {{ followedStartupIds.has(startup.id) ? 'Following' : 'Follow' }}
+        </button>
+        <a class="btn-brand card-action" [routerLink]="['/startups', startup.id]">Open startup profile</a>
+      </div>
     </article>
   </div>
 </section>

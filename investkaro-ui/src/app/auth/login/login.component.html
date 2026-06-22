@@ -1,42 +1,57 @@
 <section class="page-shell auth-page">
+
   <div class="auth-layout">
+
+    <!-- Left Side -->
     <div class="auth-story">
+
       <span class="eyebrow">Capital meets conviction</span>
-      <h1 class="section-title">Back the next serious startup with a workspace built for trust.</h1>
-      <p class="section-copy">
-        EasyInvest helps founders present their business clearly and gives investors a cleaner way to
-        discover, evaluate, and commit capital.
+
+      <h1>
+        Back the next serious startup with a workspace built for trust.
+      </h1>
+
+      <p>
+        EasyInvest helps founders present their business clearly and gives investors
+        a cleaner way to discover, evaluate and commit capital.
       </p>
 
-      <div class="story-grid">
-        <article class="status-card">
-          <span class="pill">Investor tools</span>
-          <h3>See traction fast</h3>
-          <p>Track funding, compare startups, and move from browsing to conviction without noisy screens.</p>
-        </article>
 
-        <article class="status-card accent-card">
-          <span class="pill">Founder tools</span>
-          <h3>Pitch with structure</h3>
-          <p>Present your company story, business model, and funding ask in a format investors can act on.</p>
-        </article>
-      </div>
     </div>
 
-    <div class="glass-panel auth-card">
+    <!-- Right Side -->
+    <div class="auth-card glass-panel">
+
       <div class="auth-card-copy">
+
         <span class="eyebrow">Welcome back</span>
+
         <h2>Sign in</h2>
-        <p>Use your account to open the dashboard that matches your role.</p>
+
+        <p>
+          Use your account to access your personalized workspace.
+        </p>
+
       </div>
 
       <div class="demo-row">
-        <button type="button" class="demo-pill" (click)="fillDemo('INVESTOR')">Investor demo</button>
-        <button type="button" class="demo-pill" (click)="fillDemo('FOUNDER')">Founder demo</button>
-        <button type="button" class="demo-pill" (click)="fillDemo('ADMIN')">Admin demo</button>
+
+        <button class="demo-pill"
+                type="button"
+                (click)="fillDemo('INVESTOR')">
+          Investor Demo
+        </button>
+
+        <button class="demo-pill"
+                type="button"
+                (click)="fillDemo('FOUNDER')">
+          Founder Demo
+        </button>
+
+
       </div>
 
-      <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
+       <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
         <div>
           <label class="field-label" for="email">Email</label>
           <input
@@ -78,11 +93,10 @@
           <span *ngIf="loading">Signing you in...</span>
         </button>
       </form>
+      <!-- Keep your form exactly the same -->
 
-      <p class="auth-switch">
-        New here?
-        <a routerLink="/register">Create your account</a>
-      </p>
     </div>
+
   </div>
+
 </section>

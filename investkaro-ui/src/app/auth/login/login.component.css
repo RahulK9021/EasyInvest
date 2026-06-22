@@ -1,118 +1,222 @@
-.auth-page {
-  padding-top: 28px;
+.auth-page{
+    padding:0px 0;
 }
 
-.auth-layout {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 28px;
-  align-items: stretch;
+.auth-layout{
+
+    display:grid;
+
+    grid-template-columns:
+            1.15fr .85fr;
+
+    gap:50px;
+
+    align-items:center;
 }
 
-.auth-story,
-.auth-card {
-  border-radius: 30px;
+.auth-story h1{
+
+    font-size:
+            clamp(3rem,6vw,5.2rem);
+
+    line-height:
+            .95;
+
+    margin:
+            20px 0;
+
+    font-family:
+            Georgia,serif;
+
 }
 
-.auth-story {
-  padding: 34px 10px 18px 6px;
+.auth-story p{
+
+    color:
+            var(--muted);
+
+    line-height:
+            1.9;
+
+    max-width:
+            650px;
 }
 
-.story-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 28px;
+.story-grid{
+
+    margin-top:50px;
+
+    display:grid;
+
+    grid-template-columns:
+            repeat(auto-fit,minmax(260px,1fr));
+
+    gap:20px;
 }
 
-.story-grid h3,
-.auth-card h2 {
-  margin: 14px 0 10px;
+.story-card{
+
+    padding:30px;
+
+    border-radius:28px;
+
+    background:
+            linear-gradient(
+                    180deg,
+                    rgba(255,255,255,.8),
+                    rgba(255,248,239,.75));
+
+    border:
+            1px solid rgba(0,0,0,.05);
+
+    box-shadow:
+            0 20px 40px rgba(17,24,39,.06);
+
+    transition:.4s;
 }
 
-.story-grid p,
-.auth-card p {
-  color: var(--muted);
-  line-height: 1.7;
-  margin: 0;
+.story-card:hover{
+
+    transform:
+            translateY(-10px);
 }
 
-.accent-card {
-  transform: translateY(22px);
+.story-icon{
+
+    font-size:
+            2rem;
 }
 
-.auth-card {
-  padding: 30px;
+.auth-card{
+
+    padding:45px;
+
+    border-radius:35px;
+
+    background:
+            rgba(255,255,255,.75);
+
+    backdrop-filter:
+            blur(20px);
+
+    box-shadow:
+            0 25px 70px rgba(17,24,39,.08);
+
 }
 
-.auth-card-copy {
-  margin-bottom: 18px;
+.field-input{
+
+    width:100%;
+
+    padding:16px 20px;
+
+    border-radius:18px;
+
+    border:
+            1px solid rgba(0,0,0,.08);
+
+    background:
+            rgba(255,255,255,.7);
+
+    transition:.3s;
+
 }
 
-.demo-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 24px;
+.field-input:focus{
+
+    outline:none;
+
+    border-color:
+            #d8a56b;
+
+    box-shadow:
+            0 0 0 4px rgba(216,165,107,.15);
+
 }
 
-.demo-pill {
-  border: 1px solid rgba(15, 118, 110, 0.18);
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--primary-deep);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 700;
+.demo-row{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-bottom:30px;
 }
 
-.auth-form {
-  display: grid;
-  gap: 18px;
+.demo-pill{
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:100px;
+
+    background:
+            rgba(255,248,239,.8);
+
+    color:
+            #9a7d52;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
 }
 
-.field-error {
-  display: block;
-  margin-top: 8px;
-  color: var(--danger);
+.demo-pill:hover{
+
+    transform:
+            translateY(-3px);
+
+    background:
+            white;
 }
 
-.auth-submit {
-  width: 100%;
-  margin-top: 4px;
+.auth-submit{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:20px;
+
+    color:white;
+
+    background:
+            linear-gradient(
+                    135deg,
+                    #d8a56b,
+                    #9a7d52);
+
+    box-shadow:
+            0 18px 40px rgba(154,125,82,.25);
+
+    transition:.3s;
 }
 
-.auth-submit:disabled {
-  cursor: not-allowed;
-  opacity: 0.72;
-  transform: none;
+.auth-submit:hover{
+
+    transform:
+            translateY(-4px);
 }
 
-.auth-switch {
-  margin: 18px 0 0;
-  text-align: center;
+@media(max-width:960px){
+
+.auth-layout{
+
+grid-template-columns:1fr;
+
 }
 
-.auth-switch a {
-  color: var(--primary-deep);
-  font-weight: 700;
+.auth-card{
+
+order:-1;
+
 }
 
-@media (max-width: 960px) {
-  .auth-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .accent-card {
-    transform: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .story-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-card {
-    padding: 22px;
-  }
 }

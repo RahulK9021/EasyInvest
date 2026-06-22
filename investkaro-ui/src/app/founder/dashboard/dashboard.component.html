@@ -219,6 +219,44 @@
             <span>No investor commitments yet for this startup.</span>
           </ng-template>
         </div>
+
+        <div class="detail-block">
+          <strong>Publish startup update</strong>
+          <input class="field-input" [(ngModel)]="updateTitle" placeholder="Update title" />
+          <textarea class="field-input area-input" [(ngModel)]="updateDescription" placeholder="Share progress, milestones, or traction"></textarea>
+          <button class="btn-brand" type="button" (click)="publishUpdate()">Publish update</button>
+        </div>
+
+        <div class="detail-block">
+          <strong>Timeline</strong>
+          <div *ngIf="updates.length; else noUpdates" class="mini-list">
+            <div *ngFor="let update of updates">
+              <span>{{ update.title }}</span>
+              <small>{{ update.createdAt | date:'medium' }}</small>
+            </div>
+          </div>
+          <ng-template #noUpdates>
+            <span>No updates published yet.</span>
+          </ng-template>
+        </div>
+
+        <div class="detail-block">
+          <strong>Documents</strong>
+          <select class="field-select" [(ngModel)]="documentType">
+            <option>Pitch deck PDF</option>
+            <option>Financial statements</option>
+            <option>Revenue reports</option>
+          </select>
+          <input class="field-input" type="file" (change)="onFileSelected($event)" />
+          <button class="btn-brand" type="button" (click)="uploadDocument()">Upload document</button>
+
+          <div *ngIf="documents.length" class="mini-list">
+            <div *ngFor="let document of documents">
+              <a [href]="downloadUrl(document.id)" target="_blank">{{ document.fileName }}</a>
+              <button class="btn-ghost danger-button" type="button" (click)="deleteDocument(document.id)">Delete</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <ng-template #noCreatedStartup>

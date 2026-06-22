@@ -102,7 +102,10 @@
 }
 
 .investor-list,
-.action-stack {
+.action-stack,
+.timeline-list,
+.document-list,
+.stacked-actions {
   display: grid;
   gap: 18px;
 }
@@ -120,6 +123,29 @@
 .action-button {
   width: 100%;
   margin-top: 6px;
+}
+
+.timeline-item,
+.document-row {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.timeline-item p {
+  margin: 8px 0;
+}
+
+.timeline-item small,
+.document-row strong {
+  color: var(--muted);
+}
+
+.document-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
 }
 
 .loading-card {

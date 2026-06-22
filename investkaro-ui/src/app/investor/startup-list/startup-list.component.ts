@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { InvestorService } from '../../services/investor.service';
 import { StartupService } from '../../services/startup.service';
 import { Industry, StartupSummary } from '../../services/api.models';
+import { AuthService } from '../../services/auth.service';
+import { EngagementService } from '../../services/engagement.service';
 
 @Component({
   selector: 'app-startup-list',
@@ -22,15 +24,24 @@ export class StartupListComponent implements OnInit {
   minAmount: number | null = null;
   maxAmount: number | null = null;
   industryId: number | null = null;
+  bookmarkedStartupIds = new Set<number>();
+  followedStartupIds = new Set<number>();
 
   constructor(
     private startupService: StartupService,
-    private investorService: InvestorService
+    private investorService: InvestorService,
+    private engagementService: EngagementService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.loadStartups();
     this.loadIndustries();
+    this.loadInvestorActions();
+  }
+
+  get isInvestor(): boolean {
+    return this.authService.getCurrentRole() === 'INVESTOR';
   }
 
   loadStartups() {
@@ -53,6 +64,62 @@ export class StartupListComponent implements OnInit {
     this.investorService.getIndustries().subscribe({
       next: (res) => {
         this.industries = Array.isArray(res) ? res : [];
+      }
+    });
+  }
+
+  loadInvestorActions() {
+    if (!this.isInvestor) {
+      return;
+    }
+
+    this.engagementService.getBookmarks().subscribe({
+      next: (res) => {
+        this.bookmarkedStartupIds = new Set((Array.isArray(res) ? res : []).map((item) => item.startupId));
+      }
+    });
+
+    this.engagementService.getFollows().subscribe({
+      next: (res) => {
+        this.followedStartupIds = new Set((Array.isArray(res) ? res : []).map((item) => item.startupId));
+      }
+    });
+  }
+
+  toggleBookmark(startupId: number) {
+    if (this.bookmarkedStartupIds.has(startupId)) {
+      this.engagementService.removeBookmark(startupId).subscribe({
+        next: () => {
+          this.bookmarkedStartupIds.delete(startupId);
+          this.bookmarkedStartupIds = new Set(this.bookmarkedStartupIds);
+        }
+      });
+      return;
+    }
+
+    this.engagementService.addBookmark(startupId).subscribe({
+      next: () => {
+        this.bookmarkedStartupIds.add(startupId);
+        this.bookmarkedStartupIds = new Set(this.bookmarkedStartupIds);
+      }
+    });
+  }
+
+  toggleFollow(startupId: number) {
+    if (this.followedStartupIds.has(startupId)) {
+      this.engagementService.unfollowStartup(startupId).subscribe({
+        next: () => {
+          this.followedStartupIds.delete(startupId);
+          this.followedStartupIds = new Set(this.followedStartupIds);
+        }
+      });
+      return;
+    }
+
+    this.engagementService.followStartup(startupId).subscribe({
+      next: () => {
+        this.followedStartupIds.add(startupId);
+        this.followedStartupIds = new Set(this.followedStartupIds);
       }
     });
   }

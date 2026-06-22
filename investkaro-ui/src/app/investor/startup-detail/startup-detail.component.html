@@ -101,9 +101,53 @@
           <div class="empty-state">Investor names and amounts will appear here as commitments come in.</div>
         </ng-template>
       </section>
+
+      <section class="status-card metrics-panel">
+        <h2>Startup updates</h2>
+        <div *ngIf="updates.length; else noUpdates" class="timeline-list">
+          <article class="timeline-item" *ngFor="let update of updates">
+            <strong>{{ update.title }}</strong>
+            <p>{{ update.description }}</p>
+            <small>{{ update.createdAt | date:'medium' }}</small>
+          </article>
+        </div>
+        <ng-template #noUpdates>
+          <div class="empty-state">Founder updates will appear here.</div>
+        </ng-template>
+      </section>
+
+      <section class="status-card metrics-panel">
+        <h2>Documents</h2>
+        <div *ngIf="documents.length; else noDocuments" class="document-list">
+          <a *ngFor="let document of documents" class="document-row" [href]="downloadUrl(document)" target="_blank">
+            <span>{{ document.fileName }}</span>
+            <strong>{{ document.fileType }}</strong>
+          </a>
+        </div>
+        <ng-template #noDocuments>
+          <div class="empty-state">No shared documents yet.</div>
+        </ng-template>
+      </section>
     </article>
 
     <aside class="action-stack">
+      <article class="glass-panel action-card" *ngIf="isInvestor">
+        <h2>Investor tools</h2>
+        <p>Save, follow, message, or request a meeting with the founder.</p>
+
+        <div class="stacked-actions">
+          <button class="btn-ghost action-button" type="button" (click)="bookmark()">Save startup</button>
+          <button class="btn-ghost action-button" type="button" (click)="follow()">Follow startup</button>
+          <button class="btn-brand action-button" type="button" (click)="startConversation()">Message founder</button>
+        </div>
+
+        <label class="field-label" for="meeting-date">Meeting date</label>
+        <input id="meeting-date" class="field-input" type="datetime-local" [(ngModel)]="meetingDate" />
+        <button class="btn-ghost action-button" type="button" (click)="requestMeeting()">Request meeting</button>
+
+        <div *ngIf="actionMessage" class="alert-clean success">{{ actionMessage }}</div>
+      </article>
+
       <article class="glass-panel action-card">
         <h2>Invest now</h2>
         <p>Use the investor investment API directly from this screen.</p>

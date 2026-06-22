@@ -124,3 +124,80 @@ export interface UpdateStartupPayload {
   equityOffered: number | null;
   valuation: number | null;
 }
+
+export interface SavedStartup {
+  id: number;
+  startupId: number;
+  companyName: string;
+  industryName?: string;
+  fundingGoal?: number;
+  createdAt?: string;
+}
+
+export interface FollowedStartup {
+  id: number;
+  startupId: number;
+  companyName: string;
+  industryName?: string;
+  fundingGoal?: number;
+}
+
+export interface AppNotification {
+  id: number;
+  title: string;
+  message: string;
+  type: 'MESSAGE' | 'BOOKMARK' | 'INVESTMENT' | 'PROFILE_VIEW' | 'STARTUP_UPDATE';
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface Conversation {
+  id: number;
+  investorId: number;
+  investorName: string;
+  founderId: number;
+  founderName: string;
+  startupId: number;
+  startupName: string;
+  createdAt: string;
+  unreadCount: number;
+}
+
+export interface ChatMessage {
+  id: number;
+  conversationId: number;
+  senderId: number;
+  senderName: string;
+  content: string;
+  timestamp: string;
+  isRead: boolean;
+}
+
+export interface StartupUpdate {
+  id: number;
+  startupId: number;
+  startupName: string;
+  title: string;
+  description: string;
+  createdAt: string;
+}
+
+export interface Meeting {
+  id: number;
+  investorId: number;
+  investorName: string;
+  founderId: number;
+  founderName: string;
+  startupId: number;
+  startupName: string;
+  meetingDate: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+}
+
+export interface StartupDocument {
+  id: number;
+  startupId: number;
+  fileName: string;
+  fileType: string;
+  uploadedAt: string;
+}

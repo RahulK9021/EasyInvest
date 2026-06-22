@@ -1,9 +1,11 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { StartupService } from '../../services/startup.service';
-import { FundingProgress, StartupDetail, StartupInvestor } from '../../services/api.models';
+import { FundingProgress, StartupDetail, StartupDocument, StartupInvestor, StartupUpdate } from '../../services/api.models';
+import { AuthService } from '../../services/auth.service';
+import { EngagementService } from '../../services/engagement.service';
 
 @Component({
   selector: 'app-startup-detail',
@@ -20,14 +22,21 @@ export class StartupDetailComponent implements OnInit {
   investErrorMessage = '';
   interestSuccessMessage = '';
   interestErrorMessage = '';
+  actionMessage = '';
   amount = 0;
+  meetingDate = '';
   startupId!: number;
   loading = true;
   errorMessage = '';
+  updates: StartupUpdate[] = [];
+  documents: StartupDocument[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private startupService: StartupService
+    private router: Router,
+    private startupService: StartupService,
+    private engagementService: EngagementService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -36,6 +45,12 @@ export class StartupDetailComponent implements OnInit {
     this.loadStartup(id);
     this.loadFundingProgress(id);
     this.loadInvestors(id);
+    this.loadUpdates(id);
+    this.loadDocuments(id);
+  }
+
+  get isInvestor(): boolean {
+    return this.authService.getCurrentRole() === 'INVESTOR';
   }
 
   get industryName(): string {
@@ -74,6 +89,22 @@ export class StartupDetailComponent implements OnInit {
     this.startupService.getStartupInvestors(id).subscribe({
       next: (res) => {
         this.investors = Array.isArray(res) ? res : [];
+      }
+    });
+  }
+
+  loadUpdates(id: number) {
+    this.engagementService.getStartupUpdates(id).subscribe({
+      next: (res) => {
+        this.updates = Array.isArray(res) ? res : [];
+      }
+    });
+  }
+
+  loadDocuments(id: number) {
+    this.engagementService.getDocuments(id).subscribe({
+      next: (res) => {
+        this.documents = Array.isArray(res) ? res : [];
       }
     });
   }
@@ -131,5 +162,45 @@ export class StartupDetailComponent implements OnInit {
         }, 3000);
       }
     });
+  }
+
+  bookmark() {
+    this.engagementService.addBookmark(this.startupId).subscribe({
+      next: () => this.showActionMessage('Startup saved to bookmarks.')
+    });
+  }
+
+  follow() {
+    this.engagementService.followStartup(this.startupId).subscribe({
+      next: () => this.showActionMessage('You are now following this startup.')
+    });
+  }
+
+  startConversation() {
+    this.engagementService.createConversation(this.startupId).subscribe({
+      next: (conversation) => this.router.navigate(['/messages', conversation.id])
+    });
+  }
+
+  requestMeeting() {
+    if (!this.meetingDate) {
+      this.showActionMessage('Choose a meeting date and time.');
+      return;
+    }
+
+    this.engagementService.requestMeeting(this.startupId, this.meetingDate).subscribe({
+      next: () => this.showActionMessage('Meeting request sent.')
+    });
+  }
+
+  downloadUrl(document: StartupDocument): string {
+    return this.engagementService.downloadDocument(document.id);
+  }
+
+  private showActionMessage(message: string) {
+    this.actionMessage = message;
+    setTimeout(() => {
+      this.actionMessage = '';
+    }, 3000);
   }
 }
