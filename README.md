@@ -16,11 +16,8 @@ Security](https://img.shields.io/badge/Spring%20Security-JWT-6DB33F?style=flat-s
 [![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=flat-square&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/landing-page.png" alt="EasyInvest landing page" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/landing-page.png" alt="EasyInvest landing page" width="100%">
 </p>
 ```
 
