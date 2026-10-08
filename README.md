@@ -137,47 +137,33 @@ EasyInvest.
 
 #### Sign In
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/sign-in.png" alt="EasyInvest sign in page" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/sign-in.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 #### Create Account
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/create-account.png" alt="EasyInvest account registration page" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/create-account.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
-
 ------------------------------------------------------------------------
 
 ### Investor Experience
 
 #### Investor Dashboard
-
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/investor-dashboard.png" alt="EasyInvest investor dashboard" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/investor-dashboard.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 The investor dashboard combines investment activity, startup filtering,
 top-funded startups, and investment history in one workspace.
 
 #### Startup Discovery
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/startup-listing.png" alt="EasyInvest startup discovery and listing" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/startup-listing.png" alt="EasyInvest landing page" width="100%">
 </p>
+
 ```
 Investors can review startup opportunities using information such as
 industry, funding requirements, founding year, team size, equity
@@ -185,24 +171,18 @@ offered, revenue, valuation, and problem statement.
 
 #### Saved Startups
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/bookmarks.png" alt="EasyInvest saved startups" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/bookmarks.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 Investors can bookmark opportunities for later review.
 
 #### Following
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/follow-startups.png" alt="EasyInvest followed startups" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/follow-startups.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 Investors can follow startups to keep track of opportunities and
 updates.
 
@@ -212,12 +192,10 @@ updates.
 
 #### Startup Management
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/create-startups.png" alt="EasyInvest founder startup management" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/create-startups.png" alt="EasyInvest landing page" width="100%">
 </p>
+
 ```
 Founders can create startup profiles containing company information,
 industry, founding year, team size, business model, problem statement,
@@ -229,37 +207,28 @@ and solution details.
 
 #### Meetings
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/meetings.png" alt="EasyInvest founder and investor meetings" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/meetings.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 The platform supports founder-investor meeting requests and meeting
 status workflows.
 
 #### Messaging
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/messages.png" alt="EasyInvest messaging and conversations" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/messages.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 Founders and investors can communicate through conversations and
 messages.
 
 #### Notifications
 
-```{=html}
 <p align="center">
-```
-`<img src="docs/images/notifications.png" alt="EasyInvest notifications" width="100%">`{=html}
-```{=html}
+  <img src="docs/images/notifications.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
+
 Notifications provide a centralized view of recent platform activity.
 
 ------------------------------------------------------------------------
