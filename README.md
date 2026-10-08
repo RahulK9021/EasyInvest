@@ -146,7 +146,6 @@ EasyInvest.
 <p align="center">
   <img src="docs/images/create-account.png" alt="EasyInvest landing page" width="100%">
 </p>
-------------------------------------------------------------------------
 
 ### Investor Experience
 
