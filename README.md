@@ -164,7 +164,6 @@ top-funded startups, and investment history in one workspace.
   <img src="docs/images/startup-listing.png" alt="EasyInvest landing page" width="100%">
 </p>
 
-```
 Investors can review startup opportunities using information such as
 industry, funding requirements, founding year, team size, equity
 offered, revenue, valuation, and problem statement.
@@ -172,7 +171,7 @@ offered, revenue, valuation, and problem statement.
 #### Saved Startups
 
 <p align="center">
-  <img src="docs/images/bookmarks.png" alt="EasyInvest landing page" width="100%">
+  <img src="docs/images/bookmarks.png"" alt="EasyInvest landing page" width="100%">
 </p>
 
 Investors can bookmark opportunities for later review.
@@ -196,7 +195,6 @@ updates.
   <img src="docs/images/create-startups.png" alt="EasyInvest landing page" width="100%">
 </p>
 
-```
 Founders can create startup profiles containing company information,
 industry, founding year, team size, business model, problem statement,
 and solution details.
