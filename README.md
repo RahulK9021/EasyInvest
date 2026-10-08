@@ -19,7 +19,6 @@ Security](https://img.shields.io/badge/Spring%20Security-JWT-6DB33F?style=flat-s
 <p align="center">
   <img src="docs/images/landing-page.png" alt="EasyInvest landing page" width="100%">
 </p>
-```
 
 ------------------------------------------------------------------------
 
